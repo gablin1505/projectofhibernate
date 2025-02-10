@@ -1,6 +1,5 @@
 package spring.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,10 +12,10 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/users")
-public class UserController implements spring.controllers.Controller {
+public class UserController {
     private final UserService userService;
 
-    @Autowired
+
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -29,7 +28,7 @@ public class UserController implements spring.controllers.Controller {
 
 
     @GetMapping("/show")
-    @Override
+
     public String show(@RequestParam("id") int id, Model model) {
         for (User user : userService.index()) {
             if (user.getId() == id) {
@@ -41,7 +40,7 @@ public class UserController implements spring.controllers.Controller {
 
 
     @GetMapping("/new")
-    @Override
+
     public String newPerson(Model model) {
         model.addAttribute("user", new User());
         return "users/new";
@@ -50,7 +49,7 @@ public class UserController implements spring.controllers.Controller {
 
 
     @PostMapping("/new")
-    @Override
+
     public String save(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors())
             return "users/new";
@@ -59,14 +58,14 @@ public class UserController implements spring.controllers.Controller {
     }
 
     @GetMapping("/edit")
-    @Override
+
     public String edit(Model model, @RequestParam("id") int id) {
         model.addAttribute("user", userService.show(id));
         return "users/edit";
     }
 
     @PostMapping("/update")
-    @Override
+
     public String update(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult,
                          @RequestParam("id") int id) {
@@ -79,7 +78,7 @@ public class UserController implements spring.controllers.Controller {
 
 
     @PostMapping("/delete")
-    @Override
+
     public String delete(@RequestParam("id") int id) {
         userService.delete(id);
         return "redirect:/users";
